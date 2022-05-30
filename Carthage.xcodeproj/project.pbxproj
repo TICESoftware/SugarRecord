@@ -114,6 +114,7 @@
 		237FBADD1D9C0ADC00D87AA3 /* CoreDataiCloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237FBAAC1D9C0ADC00D87AA3 /* CoreDataiCloudStorage.swift */; };
 		237FBAE01D9C0ADC00D87AA3 /* CoreDataiCloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237FBAAC1D9C0ADC00D87AA3 /* CoreDataiCloudStorage.swift */; };
 		23E15DB01D7DE1000073CC71 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E15DAF1D7DE1000073CC71 /* CoreData.framework */; };
+		B9E7F8752844E0A4002ADBA8 /* CoreDataHybridStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E7F8742844E0A4002ADBA8 /* CoreDataHybridStorage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -177,6 +178,7 @@
 		237FBB241D9C0B1C00D87AA3 /* watchOS-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "watchOS-Framework.xcconfig"; sourceTree = "<group>"; };
 		237FBB251D9C0B1C00D87AA3 /* watchOS-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "watchOS-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
 		23E15DAF1D7DE1000073CC71 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		B9E7F8742844E0A4002ADBA8 /* CoreDataHybridStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHybridStorage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -401,6 +403,7 @@
 			children = (
 				237FBAAB1D9C0ADC00D87AA3 /* CoreDataDefaultStorage.swift */,
 				237FBAAC1D9C0ADC00D87AA3 /* CoreDataiCloudStorage.swift */,
+				B9E7F8742844E0A4002ADBA8 /* CoreDataHybridStorage.swift */,
 			);
 			path = Storages;
 			sourceTree = "<group>";
@@ -707,6 +710,7 @@
 				237FBADD1D9C0ADC00D87AA3 /* CoreDataiCloudStorage.swift in Sources */,
 				237FBA741D9C0AD000D87AA3 /* NSSortDescriptorConvertible.swift in Sources */,
 				237FBACD1D9C0ADC00D87AA3 /* NSManagedObject.swift in Sources */,
+				B9E7F8752844E0A4002ADBA8 /* CoreDataHybridStorage.swift in Sources */,
 				237FBA5C1D9C0AD000D87AA3 /* Context.swift in Sources */,
 				237FBA841D9C0AD000D87AA3 /* DirUtils.swift in Sources */,
 				237FBABD1D9C0ADC00D87AA3 /* CoreDataObservable.swift in Sources */,
@@ -866,7 +870,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -909,7 +913,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
