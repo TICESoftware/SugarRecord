@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.social_media_url = 'https://twitter.com/carambalabs'
   s.requires_arc = true
 
-  s.ios.deployment_target = "8.0"
+  s.ios.deployment_target = "13.0"
   s.osx.deployment_target = "10.10"
 
   coredata_dependencies = lambda do |spec|
@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
   end
 
   all_platforms = lambda do |spec|
-    spec.ios.deployment_target = "8.0"
+    spec.ios.deployment_target = "13.0"
     spec.osx.deployment_target = "10.10"
     spec.watchos.deployment_target = "2.0"
     spec.tvos.deployment_target = '9.0'
