@@ -622,7 +622,7 @@
 				TargetAttributes = {
 					2334C4691D7DD8A500ACBC3A = {
 						CreatedOnToolsVersion = 7.3.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 1330;
 					};
 					2334C49D1D7DD93600ACBC3A = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -643,6 +643,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 2334C4601D7DD8A500ACBC3A;
@@ -933,7 +934,7 @@
 				PRODUCT_MODULE_NAME = SugarRecordCoreData;
 				PRODUCT_NAME = SugarRecordCoreData;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -952,7 +953,7 @@
 				PRODUCT_MODULE_NAME = SugarRecordCoreData;
 				PRODUCT_NAME = SugarRecordCoreData;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

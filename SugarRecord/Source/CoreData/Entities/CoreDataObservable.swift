@@ -52,16 +52,8 @@ public class CoreDataObservable<T: NSManagedObject>: RequestObservable<T>, NSFet
     // MARK: - NSFetchedResultsControllerDelegate
     
     public func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        
-        var index: Int?
-        var newIndex: Int?
-        #if os(iOS) || os(tvOS) || os(watchOS)
-            index = indexPath?.row
-            newIndex = newIndexPath?.row
-        #elseif os(OSX)
-            index = indexPath?[1]
-            newIndex = newIndexPath?[1]
-        #endif
+        let index: Int? = indexPath?[1]
+        let newIndex: Int? = newIndexPath?[1]
         switch type {
         case .delete:
             self.batchChanges.append(.delete(index!, anObject as! T))
