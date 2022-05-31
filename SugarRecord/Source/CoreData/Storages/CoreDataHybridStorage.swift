@@ -1,7 +1,7 @@
 import Foundation
 import CoreData
 
-public class CoreDataHybridtorage: Storage {
+public class CoreDataHybridStorage: Storage {
     
     // MARK: - Attributes
     
