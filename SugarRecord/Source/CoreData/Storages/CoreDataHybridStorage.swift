@@ -21,7 +21,19 @@ public class CoreDataHybridStorage: Storage {
     }
     
     public var type: StorageType = .coreData
-    public var mainContext: Context!
+    private var _mainContext: Context!
+    public var mainContext: Context! {
+        if let context = self._mainContext {
+            return context
+        }
+        let _context = cdContext(withParent: .context(self.rootSavingContext), concurrencyType: .mainQueueConcurrencyType, inMemory: false)
+        _context.observe(inMainThread: true) { [weak self] (notification) -> Void in
+            guard let mainContext = self?.mainContext as? NSManagedObjectContext else { return }
+            mainContext.mergeChanges(fromContextDidSave: notification as Notification)
+        }
+        self._mainContext = _context
+        return _context
+    }
     private var _saveContext: Context!
     public var saveContext: Context! {
         if let context = self._saveContext {
@@ -29,7 +41,8 @@ public class CoreDataHybridStorage: Storage {
         }
         let _context = cdContext(withParent: .context(self.rootSavingContext), concurrencyType: .privateQueueConcurrencyType, inMemory: false)
         _context.observe(inMainThread: true) { [weak self] (notification) -> Void in
-            (self?.mainContext as? NSManagedObjectContext)?.mergeChanges(fromContextDidSave: notification as Notification)
+            guard let mainContext = self?.mainContext as? NSManagedObjectContext else { return }
+            mainContext.mergeChanges(fromContextDidSave: notification as Notification)
         }
         self._saveContext = _context
         return _context
@@ -118,7 +131,7 @@ public class CoreDataHybridStorage: Storage {
         self.persistentStoreCoordinator = persistenceContainer.persistentStoreCoordinator
         self.persistentStore = try cdInitializeStore(store: store, storeCoordinator: persistentStoreCoordinator, migrate: migrate)
         self.rootSavingContext = cdContext(withParent: .coordinator(self.persistenceContainer.persistentStoreCoordinator), concurrencyType: .privateQueueConcurrencyType, inMemory: false)
-        self.mainContext = cdContext(withParent: .context(self.rootSavingContext), concurrencyType: .mainQueueConcurrencyType, inMemory: false)
+        self._mainContext = cdContext(withParent: .coordinator(self.persistenceContainer.persistentStoreCoordinator), concurrencyType: .mainQueueConcurrencyType, inMemory: false)
     }
     
     
@@ -128,6 +141,5 @@ public class CoreDataHybridStorage: Storage {
     public func observable<T: NSManagedObject>(request: FetchRequest<T>) -> RequestObservable<T> where T:Equatable {
         return CoreDataObservable(request: request, context: self.mainContext as! NSManagedObjectContext)
     }
-    
 }
 

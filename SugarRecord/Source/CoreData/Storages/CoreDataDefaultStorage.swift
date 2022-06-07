@@ -157,6 +157,11 @@ internal func cdContext(withParent parent: CoreDataContextParent?, concurrencyTy
         }
     }
     context!.observeToGetPermanentIDsBeforeSaving()
+    
+    context!.observe(inMainThread: true) { notification in
+        print(notification)
+    }
+    
     return context!
 }
 

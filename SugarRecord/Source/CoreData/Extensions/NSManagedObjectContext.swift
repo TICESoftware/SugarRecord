@@ -51,7 +51,8 @@ extension NSManagedObjectContext {
     
     func observe(inMainThread mainThread: Bool, saveNotification: @escaping (_ notification: Notification) -> Void) {
         let queue: OperationQueue = mainThread ? OperationQueue.main : OperationQueue()
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.NSManagedObjectContextDidSave, object: self, queue: queue, using: saveNotification)
+        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave, object: self, queue: queue, using: saveNotification)
+        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextObjectsDidChange, object: self, queue: queue, using: saveNotification)
     }
     
     func observeToGetPermanentIDsBeforeSaving() {
