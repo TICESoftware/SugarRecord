@@ -105,7 +105,6 @@ public class CoreDataDefaultStorage: Storage {
         try FileManager.default.removeItem(at: store.path() as URL)
         _ = try? FileManager.default.removeItem(atPath: "\(store.path().absoluteString)-shm")
         _ = try? FileManager.default.removeItem(atPath: "\(store.path().absoluteString)-wal")
-
     }
     
     
@@ -122,9 +121,9 @@ public class CoreDataDefaultStorage: Storage {
         self.persistentStore = try cdInitializeStore(store: store, storeCoordinator: persistentStoreCoordinator, migrate: migrate)
         self.rootSavingContext = cdContext(withParent: .coordinator(self.persistentStoreCoordinator), concurrencyType: .privateQueueConcurrencyType, inMemory: false)
         self.mainContext = cdContext(withParent: .context(self.rootSavingContext), concurrencyType: .mainQueueConcurrencyType, inMemory: false)
-        #if DEBUG
+#if DEBUG
         versionController.check()
-        #endif
+#endif
     }
     
     
@@ -141,7 +140,8 @@ public class CoreDataDefaultStorage: Storage {
 // MARK: - Internal
 
 internal func cdContext(withParent parent: CoreDataContextParent?, concurrencyType: NSManagedObjectContextConcurrencyType, inMemory: Bool) -> NSManagedObjectContext {
-    var context: NSManagedObjectContext?
+    
+    let context: NSManagedObjectContext
     if inMemory {
         context = NSManagedObjectMemoryContext(concurrencyType: concurrencyType)
     }
@@ -151,18 +151,14 @@ internal func cdContext(withParent parent: CoreDataContextParent?, concurrencyTy
     if let parent = parent {
         switch parent {
         case .context(let parentContext):
-            context!.parent = parentContext
+            context.parent = parentContext
         case .coordinator(let storeCoordinator):
-            context!.persistentStoreCoordinator = storeCoordinator
+            context.persistentStoreCoordinator = storeCoordinator
         }
     }
-    context!.observeToGetPermanentIDsBeforeSaving()
+    context.observeToGetPermanentIDsBeforeSaving()
     
-    context!.observe(inMainThread: true) { notification in
-        print(notification)
-    }
-    
-    return context!
+    return context
 }
 
 internal func cdInitializeStore(store: CoreDataStore, storeCoordinator: NSPersistentStoreCoordinator, migrate: Bool) throws -> NSPersistentStore {

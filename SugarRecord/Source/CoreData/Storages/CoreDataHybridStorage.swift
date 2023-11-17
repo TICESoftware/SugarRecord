@@ -21,27 +21,18 @@ public class CoreDataHybridStorage: Storage {
     }
     
     public var type: StorageType = .coreData
-    private var _mainContext: Context!
-    public var mainContext: Context! {
-        if let context = self._mainContext {
-            return context
-        }
-        let _context = cdContext(withParent: .context(self.rootSavingContext), concurrencyType: .mainQueueConcurrencyType, inMemory: false)
-        _context.observe(inMainThread: true) { [weak self] (notification) -> Void in
-            guard let mainContext = self?.mainContext as? NSManagedObjectContext else { return }
-            mainContext.mergeChanges(fromContextDidSave: notification as Notification)
-        }
-        self._mainContext = _context
-        return _context
-    }
+    public var mainContext: Context!
+    
     private var _saveContext: Context!
     public var saveContext: Context! {
         if let context = self._saveContext {
             return context
         }
         let _context = cdContext(withParent: .context(self.rootSavingContext), concurrencyType: .privateQueueConcurrencyType, inMemory: false)
-        _context.observe(inMainThread: true) { [weak self] (notification) -> Void in
-            guard let mainContext = self?.mainContext as? NSManagedObjectContext else { return }
+        _context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        _context.automaticallyMergesChangesFromParent = true
+        _context.observe(inMainThread: true) { [unowned self] (notification) -> Void in
+            let mainContext = self.mainContext as! NSManagedObjectContext
             mainContext.mergeChanges(fromContextDidSave: notification as Notification)
         }
         self._saveContext = _context
@@ -49,6 +40,8 @@ public class CoreDataHybridStorage: Storage {
     }
     public var memoryContext: Context! {
         let _context =  cdContext(withParent: .context(self.rootSavingContext), concurrencyType: .privateQueueConcurrencyType, inMemory: true)
+        _context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        _context.automaticallyMergesChangesFromParent = true
         return _context
     }
     
@@ -118,7 +111,6 @@ public class CoreDataHybridStorage: Storage {
         try FileManager.default.removeItem(at: store.path() as URL)
         _ = try? FileManager.default.removeItem(atPath: "\(store.path().absoluteString)-shm")
         _ = try? FileManager.default.removeItem(atPath: "\(store.path().absoluteString)-wal")
-
     }
     
     
@@ -131,7 +123,12 @@ public class CoreDataHybridStorage: Storage {
         self.persistentStoreCoordinator = persistenceContainer.persistentStoreCoordinator
         self.persistentStore = try cdInitializeStore(store: store, storeCoordinator: persistentStoreCoordinator, migrate: migrate)
         self.rootSavingContext = cdContext(withParent: .coordinator(self.persistenceContainer.persistentStoreCoordinator), concurrencyType: .privateQueueConcurrencyType, inMemory: false)
-        self._mainContext = cdContext(withParent: .coordinator(self.persistenceContainer.persistentStoreCoordinator), concurrencyType: .mainQueueConcurrencyType, inMemory: false)
+        
+        let context = cdContext(withParent: .coordinator(self.persistenceContainer.persistentStoreCoordinator), concurrencyType: .mainQueueConcurrencyType, inMemory: false)
+        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        context.automaticallyMergesChangesFromParent = true
+        
+        self.mainContext = context
     }
     
     
